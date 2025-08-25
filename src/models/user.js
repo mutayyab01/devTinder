@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const JWT = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+const validate = require("validator");
 const userScheme = new mongoose.Schema(
   {
     firstName: {
@@ -23,6 +24,11 @@ const userScheme = new mongoose.Schema(
       unique: true,
       lowercase: true,
       trim: true,
+      validate(value) {
+        if (!validate.isEmail(value)) {
+          throw new Error("Invalid Email Address! " + value);
+        }
+      },
     },
     password: {
       type: String,
@@ -35,10 +41,27 @@ const userScheme = new mongoose.Schema(
     gender: {
       type: String,
       trim: true,
+      validate(value) {
+        if (!["Male", "Female", "Other"].includes(value)) {
+          throw new Error("Please Choose the Correct Option Form the List!");
+        }
+      },
+    },
+    about: {
+      type: String,
+      trim: true,
     },
     photoURL: {
       type: String,
       trim: true,
+      validate(value) {
+        if (!validate.isURL(value)) {
+          throw new Error("Invalid Photo URL! " + value);
+        }
+      },
+    },
+    skills: {
+      type: [String],
     },
   },
   { timestamps: true }
@@ -65,6 +88,5 @@ userScheme.methods.validatePassword = async function (passwordInputByUser) {
   const ispasswordValid = bcrypt.compare(passwordInputByUser, passwordHash);
   return ispasswordValid;
 };
-
 
 module.exports = mongoose.model("User", userScheme);
