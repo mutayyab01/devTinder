@@ -35,8 +35,9 @@ const userScheme = new mongoose.Schema(
       required: true,
     },
     age: {
-      type: String,
+      type: Number,
       trim: true,
+      min: 10,
     },
     gender: {
       type: String,
@@ -66,6 +67,8 @@ const userScheme = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+// userScheme.index({ firstName: 1, lastName: 1 });
 
 // if you write arrow function then that doesn't work
 userScheme.methods.getJWT = async function () {
