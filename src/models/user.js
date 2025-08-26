@@ -64,7 +64,55 @@ const userScheme = new mongoose.Schema(
     skills: {
       type: [String],
     },
+    location: {
+      type: String,
+      trim: true,
+    },
+    occupation: {
+      type: String,
+      trim: true,
+    },
+    company: {
+      type: String,
+      trim: true,
+    },
+    education: {
+      type: String,
+      trim: true,
+    },
+    interests: {
+      type: [String],
+      trim: true,
+    },
+    githubURL: {
+      type: String,
+      trim: true,
+      validate(value) {
+        if (!validate.isURL(value)) {
+          throw new Error("Invalid GitHub URL! " + value);
+        }
+      },
+    },
+    linkedinURL: {
+      type: String,
+      trim: true,
+      validate(value) {
+        if (!validate.isURL(value)) {
+          throw new Error("Invalid LinkedIn URL! " + value);
+        }
+      },
+    },
+    portfolioURL: {
+      type: String,
+      trim: true,
+      validate(value) {
+        if (!validate.isURL(value)) {
+          throw new Error("Invalid Portfolio URL! " + value);
+        }
+      },
+    },
   },
+
   { timestamps: true }
 );
 

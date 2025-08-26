@@ -26,7 +26,15 @@ const validateEditProfileData = (request) => {
     "gender",
     "about",
     "photoURL",
-    "skills"
+    "skills",
+    "location",
+    "occupation",
+    "company",
+    "education",
+    "interests",
+    "githubURL",
+    "linkedinURL",
+    "portfolioURL"
   ];
   const isEditAllowed = Object.keys(request.body).every((field) =>
     allowedEditField.includes(field)

@@ -54,7 +54,7 @@ authRouter.post("/login", async (req, res) => {
         expires: new Date(Date.now() + 24 * 3600000), // cookie will be removed after 24 hours
       });
 
-      res.send("User Successfully Login");
+      res.send(user);
     } else {
       throw new Error("Please Check your Email or Password!");
     }
