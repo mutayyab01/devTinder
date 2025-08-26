@@ -21,7 +21,6 @@ requestRouter.post(
           .json({ error: `Status ${status} is not supported` });
       }
 
-
       const toUser = await User.findById(toUserId);
       if (!toUser) {
         return res.status(404).json({ message: "User Not Found!" });
@@ -54,6 +53,44 @@ requestRouter.post(
         message: `Connection request Send by : ${req.user.firstName}`,
         data,
       });
+    } catch (error) {
+      res.status(400).send("Error: " + error.message);
+    }
+  }
+);
+
+requestRouter.post(
+  "/request/review/:status/:requestId",
+  userAuth,
+  async (req, res) => {
+    try {
+      const logginUser = req.user;
+      const requestId = req.params.requestId;
+      const status = req.params.status.toLowerCase();
+
+      // Validate the Status
+      const allowedStatus = ["accepted", "rejected"];
+      if (!allowedStatus.includes(status)) {
+        return res
+          .status(400)
+          .json({ message: `Status ${status} is not supported` });
+      }
+
+      const connectionRequest = await ConnectionRequest.findOne({
+        _id: requestId,
+        toUserId: logginUser._id,
+        status: "interested",
+      });
+
+      if (!connectionRequest) {
+        return res
+          .status(404)
+          .json({ message: "No Pending Connection Request Found!" });
+      }
+
+      connectionRequest.status = status;
+      const data = await connectionRequest.save();
+      res.json({ message: `Connection Request ${status} Successfully!`, data });
     } catch (error) {
       res.status(400).send("Error: " + error.message);
     }
