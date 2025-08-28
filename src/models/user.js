@@ -43,7 +43,7 @@ const userScheme = new mongoose.Schema(
       type: String,
       trim: true,
       validate(value) {
-        if (!["Male", "Female", "Other"].includes(value)) {
+        if (!["Male", "Female", "Others"].includes(value)) {
           throw new Error("Please Choose the Correct Option Form the List!");
         }
       },
